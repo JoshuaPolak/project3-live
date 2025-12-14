@@ -431,35 +431,10 @@ const IMAGES = {
 
 
   //Authentication
-  const handleLogin = async (e) => {
-    e.preventDefault();
-    try {
-      const response = await fetch('https://project3-josh.wuaze.com/auth/login.php', {
-
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          username: authForm.username,
-          password: authForm.password
-        })
-      });
-      
-      if (response.ok) {
-        const data = await response.json();
-        setCurrentUser(data.user);
-        setIsLoggedIn(true);
-        setShowAuthModal(false);
-        setUserStats(data.stats || userStats);
-      } else {
-        alert('Login failed. Please check your credentials.');
-      }
-    } catch (error) {
-      console.error('Login failed:', error);
-      setCurrentUser({ id: 1, username: authForm.username });
-      setIsLoggedIn(true);
-      setShowAuthModal(false);
-    }
-  };
+const handleLogin = () => {
+  setIsLoggedIn(true);
+  setCurrentUser({ username: 'demoUser', email: 'demo@example.com' });
+};
 
   const handleRegister = async (e) => {
     e.preventDefault();
