@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "description": "Christmas Sliding Puzzle - Version 2: Reindeer Games",
   "private": true,
-  "homepage": "https://project3-josh.wuaze.com",
+  "homepage": ".",
   "dependencies": {
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
