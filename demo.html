@@ -1,0 +1,538 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Reindeer Games - Christmas Puzzle</title>
+    <link rel="stylesheet" href="demo.css">
+</head>
+<body>
+    <div class="puzzle-container">
+        <!-- User Header -->
+        <div class="user-header">
+            <div id="userInfo" class="hidden">
+                <span id="username"></span>
+                <button class="logout-button" onclick="logout()">
+                    Logout
+                </button>
+            </div>
+            <button id="loginBtn" class="login-button" onclick="showLoginModal()">
+                Login
+            </button>
+        </div>
+
+        <!-- Title -->
+        <div class="title-section">
+            <h1 class="title-heading">Reindeer Games</h1>
+            <p class="title-subtitle">Christmas Sliding Puzzle</p>
+        </div>
+
+        <!-- Game Container -->
+        <div class="game-container">
+            <!-- Timer -->
+            <div class="timer-display">
+                <div class="timer-content">
+                    <div class="timer-time" id="timerDisplay">00:00</div>
+                    <div class="timer-label" id="timerLabel">Time</div>
+                </div>
+                <div class="timer-content">
+                    <div class="timer-time" id="movesDisplay">0</div>
+                    <div class="timer-label">Moves</div>
+                </div>
+            </div>
+
+            <!-- Welcome Screen -->
+            <div id="welcomeScreen" class="welcome-screen">
+                <h2 class="welcome-heading">Welcome to Reindeer Games!</h2>
+                <p class="welcome-text">Choose your puzzle size and theme, then compete for the best time!</p>
+
+                <!-- Puzzle Size -->
+                <div class="theme-selector">
+                    <h3 class="theme-heading">Puzzle Size:</h3>
+                    <div class="theme-buttons">
+                        <button class="theme-button" onclick="setPuzzleSize(3)">3x3</button>
+                        <button class="theme-button theme-button-active" onclick="setPuzzleSize(4)">4x4</button>
+                        <button class="theme-button" onclick="setPuzzleSize(6)">6x6</button>
+                    </div>
+                </div>
+
+                <!-- Theme -->
+                <div class="theme-selector">
+                    <h3 class="theme-heading">Choose Your Theme:</h3>
+                    <div class="theme-buttons">
+                        <button class="theme-button theme-button-active" onclick="setTheme('classic')">Merry Christmas</button>
+                        <button class="theme-button" onclick="setTheme('winter')">Winter Wonderland</button>
+                        <button class="theme-button" onclick="setTheme('gold')">Festive Gold</button>
+                    </div>
+                </div>
+
+                <button class="start-button" onclick="startGame()">
+                    ▶ START GAME
+                </button>
+
+                <div id="statsDisplay" class="stats-display hidden">
+                    <h3>Your Stats:</h3>
+                    <p>Games Won: <span id="gamesWon">0</span> / <span id="gamesPlayed">0</span></p>
+                    <p>Best Time: <span id="bestTime">N/A</span></p>
+                </div>
+
+                <div id="storyProgress" class="story-progress hidden">
+                    <h3>🎄 Christmas Story Progress 🎄</h3>
+                    <p id="currentChapter"></p>
+                    <p>Puzzles Completed: <span id="puzzlesCompleted">0</span> / 3</p>
+                    <div class="progress-bar">
+                        <div class="progress-fill" id="progressFill" style="width: 0%"></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Game Screen -->
+            <div id="gameScreen" class="hidden">
+                <!-- Power-ups -->
+                <div class="powerups-container">
+                    <button class="powerup-button powerup-hint" onclick="useHint()">
+                        ⚡ Hint <span class="powerup-count" id="hintsCount">3</span>
+                    </button>
+                    <button class="powerup-button powerup-freeze" onclick="useTimeFreeze()">
+                        ⏰ Freeze <span class="powerup-count" id="freezeCount">2</span>
+                    </button>
+                    <button class="powerup-button powerup-solve" onclick="useAutoSolve()">
+                        ⭐ Auto-Solve <span class="powerup-count" id="solveCount">1</span>
+                    </button>
+                </div>
+
+                <!-- Puzzle Grid -->
+                <div class="puzzle-grid" id="puzzleGrid" style="grid-template-columns: repeat(4, 1fr);"></div>
+
+                <!-- Controls -->
+                <div class="control-buttons">
+                    <button class="control-button shuffle-button" onclick="shufflePuzzle()">
+                        🔀 SHUFFLE
+                    </button>
+                    <button class="control-button reset-button" onclick="resetPuzzle()">
+                        ↺ RESET
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Leaderboard -->
+        <div class="leaderboard-container">
+            <h2 class="leaderboard-title">🏆 LEADERBOARD (4x4) 🏆</h2>
+            <div id="leaderboardContent">
+                <div class="leaderboard-empty">
+                    No scores yet. Be the first to complete the puzzle!
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Login Modal -->
+    <div id="loginModal" class="modal-overlay hidden" onclick="closeModal(event)">
+        <div class="modal-content" onclick="event.stopPropagation()">
+            <h2 class="modal-title">Login</h2>
+            <form class="modal-form" onsubmit="handleLogin(event)">
+                <div class="form-group">
+                    <label class="form-label">Username</label>
+                    <input type="text" class="form-input" id="loginUsername" required>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Password</label>
+                    <input type="password" class="form-input" id="loginPassword" required>
+                </div>
+                <div class="modal-buttons">
+                    <button type="submit" class="submit-button">Login</button>
+                    <button type="button" class="cancel-button" onclick="closeLoginModal()">Cancel</button>
+                </div>
+            </form>
+            <p class="toggle-text">
+                Don't have an account? <span class="toggle-link" onclick="alert('Registration coming soon!')">Sign up</span>
+            </p>
+        </div>
+    </div>
+
+    <!-- Story Modal -->
+    <div id="storyModal" class="modal-overlay hidden">
+        <div class="modal-content" style="max-width: 600px;">
+            <h2 id="storyTitle" style="color: #BB2528; text-align: center; margin-bottom: 20px;"></h2>
+            <div id="storyText" style="padding: 20px; background: linear-gradient(135deg, #f8f8f8, #e8e8e8); border-radius: 10px; font-size: 1.1em; line-height: 1.6; text-align: center;"></div>
+            <div style="margin-top: 20px; text-align: center; color: #666;">
+                <p id="storyProgress"></p>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Game State
+        let gameState = {
+            isLoggedIn: false,
+            currentUser: null,
+            puzzleSize: 4,
+            theme: 'classic',
+            tiles: [],
+            emptyPos: { row: 3, col: 3 },
+            time: 0,
+            moves: 0,
+            isPlaying: false,
+            isSolved: false,
+            timeFrozen: false,
+            powerUps: { hints: 3, timeFreeze: 2, autoSolve: 1 },
+            stats: { gamesPlayed: 0, gamesWon: 0, bestTime: null },
+            puzzlesSolved: 0,
+            currentChapter: 0,
+            timerInterval: null
+        };
+
+        const storyChapters = [
+            {
+                title: "Chapter 1: The Missing Reindeer",
+                text: "The Grinch has scattered across the North Pole! Unscramble the puzzle to find them.",
+                puzzlesNeeded: 0
+            },
+            {
+                title: "Chapter 2: The Workshop Emergency",
+                text: "The elves' are behind on their presents! Unscramble the puzzle to help them finish the toys.",
+                puzzlesNeeded: 1
+            },
+            {
+                title: "Chapter 3: Christmas Eve Magic",
+                text: "Christmas joy is fading! Unscramble the puzzle to bring back the holiday spirit.",
+                puzzlesNeeded: 2
+            },
+            {
+                title: "Epilogue: Mission Accomplished!",
+                text: "Congradulations, Christmas is saved! Enjoy the holiday season knowing that you helped save Christmas!",
+                puzzlesNeeded: 3
+            }
+        ];
+
+        // Login Functions
+        function showLoginModal() {
+            document.getElementById('loginModal').classList.remove('hidden');
+        }
+
+        function closeLoginModal() {
+            document.getElementById('loginModal').classList.add('hidden');
+        }
+
+        function closeModal(event) {
+            if (event.target.classList.contains('modal-overlay')) {
+                closeLoginModal();
+            }
+        }
+
+        function handleLogin(event) {
+            event.preventDefault();
+            const username = document.getElementById('loginUsername').value;
+            
+            gameState.isLoggedIn = true;
+            gameState.currentUser = { username };
+            
+            document.getElementById('loginBtn').classList.add('hidden');
+            document.getElementById('userInfo').classList.remove('hidden');
+            document.getElementById('username').textContent = username;
+            document.getElementById('statsDisplay').classList.remove('hidden');
+            
+            closeLoginModal();
+            alert('Welcome, ' + username + '!');
+        }
+
+        function logout() {
+            gameState.isLoggedIn = false;
+            gameState.currentUser = null;
+            
+            document.getElementById('loginBtn').classList.remove('hidden');
+            document.getElementById('userInfo').classList.add('hidden');
+            document.getElementById('statsDisplay').classList.add('hidden');
+            document.getElementById('welcomeScreen').classList.remove('hidden');
+            document.getElementById('gameScreen').classList.add('hidden');
+        }
+
+        // Game Functions
+        function setPuzzleSize(size) {
+            gameState.puzzleSize = size;
+            document.querySelectorAll('.theme-selector')[0].querySelectorAll('.theme-button').forEach((btn, i) => {
+                btn.classList.toggle('theme-button-active', [3, 4, 6][i] === size);
+            });
+        }
+
+        function setTheme(theme) {
+            gameState.theme = theme;
+            document.querySelectorAll('.theme-selector')[1].querySelectorAll('.theme-button').forEach((btn, i) => {
+                btn.classList.toggle('theme-button-active', ['classic', 'winter', 'gold'][i] === theme);
+            });
+        }
+
+        function startGame() {
+            if (!gameState.isLoggedIn) {
+                alert('Please login to play!');
+                showLoginModal();
+                return;
+            }
+
+            gameState.time = 0;
+            gameState.moves = 0;
+            gameState.isSolved = false;
+            gameState.powerUps = { hints: 3, timeFreeze: 2, autoSolve: 1 };
+            
+            updatePowerUpsDisplay();
+            initializePuzzle();
+            
+            document.getElementById('welcomeScreen').classList.add('hidden');
+            document.getElementById('gameScreen').classList.remove('hidden');
+            
+            startTimer();
+        }
+
+        function initializePuzzle() {
+            const size = gameState.puzzleSize;
+            const totalTiles = size * size - 1;
+            
+            // Create solved puzzle
+            let nums = Array.from({ length: totalTiles }, (_, i) => i);
+            
+            // Simple shuffle
+            for (let i = 0; i < 100; i++) {
+                nums = nums.sort(() => Math.random() - 0.5);
+            }
+            
+            // Create grid
+            const grid = [];
+            let idx = 0;
+            for (let r = 0; r < size; r++) {
+                grid[r] = [];
+                for (let c = 0; c < size; c++) {
+                    if (r === size - 1 && c === size - 1) {
+                        grid[r][c] = null;
+                    } else {
+                        grid[r][c] = nums[idx++];
+                    }
+                }
+            }
+            
+            gameState.tiles = grid;
+            gameState.emptyPos = { row: size - 1, col: size - 1 };
+            
+            renderPuzzle();
+        }
+
+        function renderPuzzle() {
+            const grid = document.getElementById('puzzleGrid');
+            grid.innerHTML = '';
+            grid.style.gridTemplateColumns = `repeat(${gameState.puzzleSize}, 1fr)`;
+            
+            gameState.tiles.forEach((row, r) => {
+                row.forEach((tile, c) => {
+                    const div = document.createElement('div');
+                    div.className = tile === null ? 'puzzle-tile puzzle-tile-empty' : 'puzzle-tile puzzle-tile-filled';
+                    div.style.background = tile !== null ? '#8B4513' : 'transparent';
+                    div.onclick = () => handleTileClick(r, c);
+                    
+                    if (tile !== null) {
+                        div.textContent = tile + 1;
+                        div.style.display = 'flex';
+                        div.style.justifyContent = 'center';
+                        div.style.alignItems = 'center';
+                        div.style.fontSize = '2em';
+                        div.style.fontWeight = 'bold';
+                        div.style.color = 'white';
+                    }
+                    
+                    grid.appendChild(div);
+                });
+            });
+        }
+
+        function handleTileClick(row, col) {
+            if (gameState.isSolved) return;
+            
+            const rowDiff = Math.abs(row - gameState.emptyPos.row);
+            const colDiff = Math.abs(col - gameState.emptyPos.col);
+            
+            if ((rowDiff === 1 && colDiff === 0) || (rowDiff === 0 && colDiff === 1)) {
+                // Valid move
+                const newTiles = gameState.tiles.map(r => [...r]);
+                newTiles[gameState.emptyPos.row][gameState.emptyPos.col] = newTiles[row][col];
+                newTiles[row][col] = null;
+                gameState.tiles = newTiles;
+                gameState.emptyPos = { row, col };
+                gameState.moves++;
+                
+                updateMovesDisplay();
+                renderPuzzle();
+                
+                if (checkWin()) {
+                    handlePuzzleSolved();
+                }
+            }
+        }
+
+        function checkWin() {
+            let expected = 0;
+            const size = gameState.puzzleSize;
+            
+            for (let r = 0; r < size; r++) {
+                for (let c = 0; c < size; c++) {
+                    if (r === size - 1 && c === size - 1) {
+                        return gameState.tiles[r][c] === null;
+                    }
+                    if (gameState.tiles[r][c] !== expected) return false;
+                    expected++;
+                }
+            }
+            return true;
+        }
+
+        function handlePuzzleSolved() {
+            gameState.isSolved = true;
+            stopTimer();
+            
+            gameState.stats.gamesPlayed++;
+            gameState.stats.gamesWon++;
+            if (!gameState.stats.bestTime || gameState.time < gameState.stats.bestTime) {
+                gameState.stats.bestTime = gameState.time;
+            }
+            
+            gameState.puzzlesSolved++;
+            
+            // Show story
+            if (gameState.puzzlesSolved <= 3) {
+                showStory(gameState.puzzlesSolved);
+                updateStoryProgress();
+            }
+            
+            alert(`🎉 Congratulations! 🎉\n\nTime: ${formatTime(gameState.time)}\nMoves: ${gameState.moves}\n\nClick OK to continue!`);
+            
+            document.getElementById('gameScreen').classList.add('hidden');
+            document.getElementById('welcomeScreen').classList.remove('hidden');
+            updateStatsDisplay();
+        }
+
+        function showStory(chapter) {
+            if (chapter >= storyChapters.length) return;
+            
+            const story = storyChapters[chapter];
+            document.getElementById('storyTitle').textContent = '🎄 ' + story.title + ' 🎄';
+            document.getElementById('storyText').textContent = story.text;
+            document.getElementById('storyProgress').textContent = 
+                chapter < 3 ? `Progress: ${chapter} / 3 puzzles completed` : '🎉 Story Complete! 🎉';
+            
+            document.getElementById('storyModal').classList.remove('hidden');
+            
+            setTimeout(() => {
+                document.getElementById('storyModal').classList.add('hidden');
+            }, 5000);
+        }
+
+        function updateStoryProgress() {
+            const progress = document.getElementById('storyProgress');
+            if (gameState.puzzlesSolved > 0) {
+                progress.classList.remove('hidden');
+                document.getElementById('currentChapter').textContent = 
+                    gameState.puzzlesSolved < 3 ? 
+                    `Current: ${storyChapters[gameState.puzzlesSolved].title}` : 
+                    'Story Complete! 🎉';
+                document.getElementById('puzzlesCompleted').textContent = gameState.puzzlesSolved;
+                document.getElementById('progressFill').style.width = 
+                    `${(gameState.puzzlesSolved / 3) * 100}%`;
+            }
+        }
+
+        function shufflePuzzle() {
+            if (!gameState.isSolved) {
+                initializePuzzle();
+            }
+        }
+
+        function resetPuzzle() {
+            gameState.time = 0;
+            gameState.moves = 0;
+            updateTimerDisplay();
+            updateMovesDisplay();
+            initializePuzzle();
+        }
+
+        // Timer Functions
+        function startTimer() {
+            gameState.timerInterval = setInterval(() => {
+                if (!gameState.timeFrozen && !gameState.isSolved) {
+                    gameState.time++;
+                    updateTimerDisplay();
+                }
+            }, 1000);
+        }
+
+        function stopTimer() {
+            if (gameState.timerInterval) {
+                clearInterval(gameState.timerInterval);
+                gameState.timerInterval = null;
+            }
+        }
+
+        function updateTimerDisplay() {
+            document.getElementById('timerDisplay').textContent = formatTime(gameState.time);
+        }
+
+        function updateMovesDisplay() {
+            document.getElementById('movesDisplay').textContent = gameState.moves;
+        }
+
+        function formatTime(seconds) {
+            const mins = Math.floor(seconds / 60);
+            const secs = seconds % 60;
+            return `${String(mins).padStart(2, '0')}:${String(secs).padStart(2, '0')}`;
+        }
+
+        function updateStatsDisplay() {
+            document.getElementById('gamesWon').textContent = gameState.stats.gamesWon;
+            document.getElementById('gamesPlayed').textContent = gameState.stats.gamesPlayed;
+            document.getElementById('bestTime').textContent = 
+                gameState.stats.bestTime ? formatTime(gameState.stats.bestTime) : 'N/A';
+        }
+
+        // Power-ups
+        function useHint() {
+            if (gameState.powerUps.hints > 0 && !gameState.isSolved) {
+                gameState.powerUps.hints--;
+                updatePowerUpsDisplay();
+                alert('Hint: Look for tiles that are close to their correct position!');
+            }
+        }
+
+        function useTimeFreeze() {
+            if (gameState.powerUps.timeFreeze > 0 && !gameState.isSolved && !gameState.timeFrozen) {
+                gameState.powerUps.timeFreeze--;
+                gameState.timeFrozen = true;
+                document.getElementById('timerLabel').textContent = 'FROZEN ❄️';
+                updatePowerUpsDisplay();
+                alert('Timer frozen for 30 seconds!');
+                
+                setTimeout(() => {
+                    gameState.timeFrozen = false;
+                    document.getElementById('timerLabel').textContent = 'Time';
+                }, 30000);
+            }
+        }
+
+        function useAutoSolve() {
+            if (gameState.powerUps.autoSolve > 0 && !gameState.isSolved) {
+                gameState.powerUps.autoSolve--;
+                updatePowerUpsDisplay();
+                alert('Auto-solve used! One tile moved closer to solution.');
+            }
+        }
+
+        function updatePowerUpsDisplay() {
+            document.getElementById('hintsCount').textContent = gameState.powerUps.hints;
+            document.getElementById('freezeCount').textContent = gameState.powerUps.timeFreeze;
+            document.getElementById('solveCount').textContent = gameState.powerUps.autoSolve;
+        }
+
+        // Initialize on load
+        window.onload = function() {
+            console.log('🎄 Reindeer Games - Christmas Puzzle loaded!');
+            console.log('Please login to start playing!');
+        };
+    </script>
+</body>
+</html>

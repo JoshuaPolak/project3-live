@@ -1,0 +1,702 @@
+@import url('https://fonts.googleapis.com/css2?family=Mountains+of+Christmas:wght@400;700&display=swap');
+
+/* Apply Christmas font to all elements */
+* {
+  font-family: 'Mountains of Christmas', cursive;
+}
+
+.title-heading {
+  font-family: 'Mountains of Christmas', cursive;
+  font-size: 3em;
+  font-weight: 700;
+}
+
+/* Main container */
+.puzzle-container {
+  min-height: 100vh;
+  background-size: cover;
+  background-attachment: fixed;
+  padding: 20px;
+}
+
+/* Title section */
+.title-section {
+  text-align: center;
+  color: white;
+  margin-bottom: 30px;
+}
+
+.title-heading {
+  font-size: 3em;
+  margin: 0 0 10px 0;
+}
+
+.title-subtitle {
+  font-size: 1.2em;
+  margin: 0;
+}
+
+/* User header */
+.user-header {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 20px;
+  color: white;
+}
+
+.login-button {
+  padding: 8px 20px;
+  background: linear-gradient(135deg, #BB2528, #8B1A1D);
+  color: white;
+  border: none;
+  border-radius: 20px;
+  cursor: pointer;
+  font-weight: bold;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.logout-button {
+  padding: 8px 20px;
+  background: linear-gradient(135deg, #2E7D32, #1B5E20);
+  color: white;
+  border: none;
+  border-radius: 20px;
+  cursor: pointer;
+  font-weight: bold;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+}
+
+/* Game container */
+.game-container {
+  max-width: 800px;
+  margin: 0 auto;
+  background: white;
+  border-radius: 20px;
+  padding: 30px;
+}
+
+/* Timer display */
+.timer-display {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 20px;
+  padding: 15px;
+  background: linear-gradient(135deg, #BB2528, #8B1A1D);
+  border-radius: 10px;
+  color: white;
+}
+
+.timer-content {
+  text-align: center;
+}
+
+.timer-time {
+  font-size: 1.5em;
+  font-weight: bold;
+}
+
+.timer-label {
+  font-size: 0.8em;
+}
+
+/* Welcome screen */
+.welcome-screen {
+  text-align: center;
+  padding: 40px;
+  background: linear-gradient(135deg, #f8f8f8, #e8e8e8);
+  border-radius: 15px;
+  margin-bottom: 20px;
+}
+
+.welcome-heading {
+  color: #BB2528;
+  margin-bottom: 20px;
+}
+
+.welcome-text {
+  margin-bottom: 20px;
+  font-size: 1.1em;
+  color: #666;
+  font-style: italic;
+}
+
+.preview-image-container {
+  max-width: 300px;
+  margin: 20px auto;
+  border-radius: 10px;
+  overflow: hidden;
+  border: 3px solid #BB2528;
+}
+
+.preview-image {
+  width: 100%;
+}
+
+/* Start button */
+.start-button {
+  padding: 15px 40px;
+  font-size: 1.3em;
+  color: white;
+  border: none;
+  border-radius: 50px;
+  font-weight: bold;
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.start-button:enabled {
+  background: linear-gradient(135deg, #BB2528, #8B1A1D);
+  cursor: pointer;
+}
+
+.start-button:disabled {
+  background: #ccc;
+  cursor: not-allowed;
+}
+
+/* Puzzle grid */
+.puzzle-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 3px;
+  max-width: 500px;
+  margin: 0 auto 20px;
+  padding: 20px;
+  background: linear-gradient(135deg, #BB2528, #8B1A1D);
+  border-radius: 15px;
+}
+
+/* Puzzle tiles */
+.puzzle-tile {
+  aspect-ratio: 1;
+  border-radius: 5px;
+  background-size: 400%;
+}
+
+.puzzle-tile-empty {
+  background: rgba(0, 0, 0, 0.4);
+  cursor: default;
+  border: 2px dashed rgba(255, 255, 255, 0.3);
+}
+
+.puzzle-tile-filled {
+  cursor: pointer;
+  border: 2px solid rgba(187, 37, 40, 0.5);
+}
+
+/* Control buttons */
+.control-buttons {
+  display: flex;
+  gap: 15px;
+  justify-content: center;
+  margin-bottom: 20px;
+}
+
+.control-button {
+  padding: 12px 25px;
+  font-size: 1em;
+  color: white;
+  border: none;
+  border-radius: 25px;
+  font-weight: bold;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.shuffle-button:enabled {
+  background: linear-gradient(135deg, #4A90E2, #357ABD);
+  cursor: pointer;
+}
+
+.shuffle-button:disabled {
+  background: #ccc;
+  cursor: not-allowed;
+}
+
+.reset-button:enabled {
+  background: linear-gradient(135deg, #2E7D32, #1B5E20);
+  cursor: pointer;
+}
+
+.reset-button:disabled {
+  background: #ccc;
+  cursor: not-allowed;
+}
+
+/* Win message */
+.win-message {
+  text-align: center;
+  padding: 20px;
+  background: linear-gradient(135deg, #7ED321, #5FA319);
+  border-radius: 15px;
+  color: white;
+  margin-bottom: 20px;
+}
+
+.win-time {
+  font-size: 1.2em;
+}
+
+.play-again-button {
+  margin-top: 15px;
+  padding: 12px 25px;
+  background: white;
+  color: #7ED321;
+  border: none;
+  border-radius: 25px;
+  cursor: pointer;
+  font-weight: bold;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+}
+
+/* Leaderboard */
+.leaderboard-container {
+  max-width: 800px;
+  margin: 30px auto;
+  background: white;
+  border-radius: 20px;
+  padding: 30px;
+}
+
+.leaderboard-title {
+  text-align: center;
+  color: #BB2528;
+  margin-bottom: 20px;
+  font-size: 2em;
+  border-bottom: 3px solid #BB2528;
+  padding-bottom: 10px;
+}
+
+.leaderboard-content {
+  background: linear-gradient(135deg, #f8f8f8, #e8e8e8);
+  border-radius: 10px;
+  padding: 15px;
+}
+
+.leaderboard-empty {
+  text-align: center;
+  padding: 40px;
+  color: #666;
+  font-size: 1.1em;
+}
+
+.leaderboard-entry {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 15px 20px;
+  margin-bottom: 10px;
+  border-radius: 10px;
+  border: 2px solid #BB2528;
+}
+
+/* Christmas Tree for first place */
+.leaderboard-entry-gold {
+  background: linear-gradient(135deg, #2E7D32, #1B5E20);
+  box-shadow: 0 4px 15px rgba(46, 125, 50, 0.4);
+}
+
+.leaderboard-entry-silver {
+  background: linear-gradient(135deg, #C0C0C0, #A8A8A8);
+  box-shadow: 0 4px 15px rgba(192, 192, 192, 0.4);
+}
+
+.leaderboard-entry-bronze {
+  background: linear-gradient(135deg, #CD7F32, #B87333);
+  box-shadow: 0 4px 15px rgba(205, 127, 50, 0.4);
+}
+
+.leaderboard-entry-regular {
+  background: white;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+.leaderboard-rank {
+  font-size: 1.5em;
+  fontWeight: bold;
+  min-width: 30px;
+}
+
+.leaderboard-name {
+  font-size: 1.2em;
+  font-weight: bold;
+}
+
+/* Modal */
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.7);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+}
+
+.modal-content {
+  background: white;
+  padding: 30px;
+  border-radius: 20px;
+  max-width: 400px;
+  width: 90%;
+}
+
+.modal-title {
+  color: #BB2528;
+  margin-bottom: 20px;
+  text-align: center;
+}
+
+.modal-form {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+
+.form-label {
+  font-weight: bold;
+  color: #333;
+}
+
+.form-input {
+  padding: 10px;
+  border: 2px solid #ddd;
+  border-radius: 8px;
+  font-size: 1em;
+}
+
+.form-input:focus {
+  outline: none;
+  border-color: #BB2528;
+}
+
+.modal-buttons {
+  display: flex;
+  gap: 10px;
+  margin-top: 20px;
+}
+
+.submit-button {
+  flex: 1;
+  padding: 12px;
+  background: linear-gradient(135deg, #BB2528, #8B1A1D);
+  color: white;
+  border: none;
+  border-radius: 25px;
+  cursor: pointer;
+  font-weight: bold;
+  font-size: 1em;
+}
+
+.cancel-button {
+  flex: 1;
+  padding: 12px;
+  background: #ccc;
+  color: #333;
+  border: none;
+  border-radius: 25px;
+  cursor: pointer;
+  font-weight: bold;
+  font-size: 1em;
+}
+
+.toggle-text {
+  text-align: center;
+  margin-top: 15px;
+  color: #666;
+}
+
+.toggle-link {
+  color: #BB2528;
+  cursor: pointer;
+  text-decoration: underline;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .title-heading {
+    font-size: 2em;
+  }
+  
+  .puzzle-grid {
+    max-width: 350px;
+  }
+  
+  .control-buttons {
+    flex-direction: column;
+  }
+  
+  .control-button {
+    width: 100%;
+  }
+}
+
+/* Advanced Features - Theme System */
+.theme-selector {
+  margin-bottom: 30px;
+}
+
+.theme-heading {
+  color: #BB2528;
+  margin-bottom: 15px;
+  font-size: 1.2em;
+  text-align: center;
+}
+
+.theme-buttons {
+  display: flex;
+  gap: 10px;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+.theme-button {
+  padding: 10px 20px;
+  border: 2px solid #ddd;
+  border-radius: 10px;
+  cursor: pointer;
+  font-weight: bold;
+  font-size: 1em;
+  transition: all 0.3s ease;
+}
+
+.theme-button-active {
+  border-color: #BB2528;
+}
+
+/* Power-ups */
+.powerups-container {
+  display: flex;
+  gap: 10px;
+  justify-content: center;
+  margin-bottom: 20px;
+  flex-wrap: wrap;
+}
+
+.powerup-button {
+  padding: 10px 15px;
+  border: none;
+  border-radius: 15px;
+  cursor: pointer;
+  font-weight: bold;
+  font-size: 0.9em;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  transition: all 0.3s ease;
+}
+
+.powerup-button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+/* Christmas Tree for hint powerup */
+.powerup-hint {
+  background: linear-gradient(135deg, #2E7D32, #1B5E20);
+  color: white;
+}
+
+.powerup-freeze {
+  background: linear-gradient(135deg, #4A90E2, #357ABD);
+  color: white;
+}
+
+.powerup-solve {
+  background: linear-gradient(135deg, #9B59B6, #8E44AD);
+  color: white;
+}
+
+.powerup-count {
+  background: rgba(255, 255, 255, 0.3);
+  padding: 2px 8px;
+  border-radius: 10px;
+  font-size: 0.85em;
+}
+
+/* Achievement Notification - Christmas Tree */
+.achievement-notification {
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  background: linear-gradient(135deg, #2E7D32, #1B5E20);
+  color: white;
+  padding: 20px;
+  border-radius: 15px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+  z-index: 2000;
+  max-width: 300px;
+  animation: slideIn 0.5s ease;
+}
+
+@keyframes slideIn {
+  from {
+    transform: translateX(400px);
+    opacity: 0;
+  }
+  to {
+    transform: translateX(0);
+    opacity: 1;
+  }
+}
+
+.achievement-title {
+  font-size: 1.3em;
+  font-weight: bold;
+  margin-bottom: 10px;
+}
+
+.achievement-description {
+  font-size: 0.95em;
+}
+
+/* Mobile Menu */
+.mobile-menu-button {
+  display: none;
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  z-index: 1001;
+  background: linear-gradient(135deg, #BB2528, #8B1A1D);
+  color: white;
+  border: none;
+  padding: 10px;
+  border-radius: 50%;
+  cursor: pointer;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+}
+
+.mobile-menu {
+  position: fixed;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  width: 250px;
+  background: white;
+  box-shadow: -5px 0 15px rgba(0, 0, 0, 0.3);
+  z-index: 1002;
+  padding: 20px;
+  transform: translateX(100%);
+  transition: transform 0.3s ease;
+}
+
+.mobile-menu-open {
+  transform: translateX(0);
+}
+
+.mobile-menu-close {
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: #333;
+}
+
+/* Shake Animation */
+@keyframes shake {
+  0%, 100% { transform: translateX(0); }
+  25% { transform: translateX(-10px); }
+  75% { transform: translateX(10px); }
+}
+
+.shake {
+  animation: shake 0.3s ease;
+}
+
+/* Responsive - Mobile */
+@media (max-width: 768px) {
+  .title-heading {
+    font-size: 2em;
+  }
+  
+  .title-subtitle {
+    font-size: 1em;
+  }
+  
+  .puzzle-grid {
+    max-width: 350px;
+    padding: 15px;
+  }
+  
+  .control-buttons {
+    flex-direction: column;
+  }
+  
+  .control-button {
+    width: 100%;
+  }
+  
+  .powerups-container {
+    flex-direction: column;
+  }
+  
+  .powerup-button {
+    width: 100%;
+  }
+  
+  .mobile-menu-button {
+    display: block;
+  }
+  
+  .user-header {
+    display: none;
+  }
+  
+  .achievement-notification {
+    top: 80px;
+    right: 10px;
+    left: 10px;
+    max-width: none;
+  }
+  
+  .leaderboard-entry {
+    flex-direction: column;
+    text-align: center;
+    gap: 10px;
+  }
+  
+  .preview-image-container {
+    max-width: 200px;
+  }
+}
+
+/* Tile Numbers (like demo image) */
+.tile-number {
+  position: absolute;
+  top: 5px;
+  left: 5px;
+  background: rgba(255, 255, 255, 0.9);
+  color: #000;
+  font-weight: bold;
+  font-size: 0.9em;
+  padding: 2px 6px;
+  border-radius: 3px;
+  border: 1px solid #333;
+  pointer-events: none;
+  z-index: 10;
+}
+
+.puzzle-tile-filled {
+  position: relative;
+}
