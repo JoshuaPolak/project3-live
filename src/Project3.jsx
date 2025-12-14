@@ -153,7 +153,7 @@ export default function ReindeerGamesPuzzle() {
   //Load Leaderboard
   const loadLeaderboard = async () => {
     try {
-      const response = await fetch(``https://project3-josh.wuaze.com/leaderboard.php?size=${puzzleSize}&limit=10`;
+      const response = await fetch(`https://project3-josh.wuaze.com/leaderboard.php?size=${puzzleSize}&limit=10`);
       const data = await response.json();
       setLeaderboard(data);
     } catch (error) {
