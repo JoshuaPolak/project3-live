@@ -153,7 +153,7 @@ export default function ReindeerGamesPuzzle() {
   //Load Leaderboard
   const loadLeaderboard = async () => {
     try {
-      const response = await fetch(`http://localhost/project3-backend/api/leaderboard.php?size=${puzzleSize}&limit=10`);
+      const response = await fetch(``https://project3-josh.wuaze.com/leaderboard.php?size=${puzzleSize}&limit=10`;
       const data = await response.json();
       setLeaderboard(data);
     } catch (error) {
@@ -363,7 +363,7 @@ export default function ReindeerGamesPuzzle() {
     }
 
     try {
-      const response = await fetch('http://localhost/project3-backend/api/scores/submit.php', {
+      const response = await fetch('https://project3-josh.wuaze.com/scores/submit.php', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
@@ -434,7 +434,7 @@ export default function ReindeerGamesPuzzle() {
   const handleLogin = async (e) => {
     e.preventDefault();
     try {
-      const response = await fetch('http://localhost/project3-backend/api/auth/login.php', {
+      const response = await fetch('https://project3-josh.wuaze.com/auth/login.php', {
 
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
@@ -464,7 +464,7 @@ export default function ReindeerGamesPuzzle() {
   const handleRegister = async (e) => {
     e.preventDefault();
     try {
-      const response = await fetch('http://localhost/project3-backend/api/auth/register.php', {
+      const response = await fetch('https://project3-josh.wuaze.com/auth/register.php', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(authForm)
