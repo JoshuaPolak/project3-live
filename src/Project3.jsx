@@ -4,11 +4,11 @@ import './Project3.css';
 
 export default function ReindeerGamesPuzzle() {
   // Image options
-  const IMAGES = {
-    northpole: { url: '/North_pole.png', name: 'North Pole' },
-    workshop: { url: '/workshop.png', name: 'Santa\'s Workshop' },
-    christmas: { url: '/christmas.jpg', name: 'Christmas Night' }
-  };
+const IMAGES = {
+  northpole: { url: 'https://project3-josh.wuaze.com/North_pole.png', name: 'North Pole' },
+  workshop: { url: 'https://project3-josh.wuaze.com/workshop.png', name: "Santa's Workshop" },
+  christmas: { url: 'https://project3-josh.wuaze.com/christmas.jpg', name: 'Christmas Night' }
+};
   
 
   //User Authentication
